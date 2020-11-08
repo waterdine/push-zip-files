@@ -1,15 +1,42 @@
+
 const core = require('@actions/core');
 const github = require('@actions/github');
 
 try {
-  // `who-to-greet` input defined in action metadata file
-  const nameToGreet = core.getInput('who-to-greet');
-  console.log(`Hello ${nameToGreet}!`);
-  const time = (new Date()).toTimeString();
-  core.setOutput("time", time);
-  // Get the JSON webhook payload for the event that triggered the workflow
-  const payload = JSON.stringify(github.context.payload, undefined, 2)
-  console.log(`The event payload: ${payload}`);
+  const repo = core.getInput('repo');
+  const { exec, spawn } = require('child_process');
+  
+  if (repo.includes('\'') || repo.includes('"'))
+  {
+     core.setFailed("Invalid characters in string");
+  }
+  
+  exec('git add *.zip', {cwd:repo}, (err, stdout, stderr) => {
+    console.log(stdout);
+    console.log(stderr);
+    if (err) {
+      core.setFailed(err);
+      return;
+    }
+  });
+  
+  exec('git commit -m "Update binaries"', {cwd:repo}, (err, stdout, stderr) => {
+    console.log(stdout);
+    console.log(stderr);
+    if (err) {
+      core.setFailed(err);
+      return;
+    }
+  });
+  
+  exec('git push origin main', {cwd:repo}, (err, stdout, stderr) => {
+    console.log(stdout);
+    console.log(stderr);
+    if (err) {
+      core.setFailed(err);
+      return;
+    }
+  });
 } catch (error) {
   core.setFailed(error.message);
 }
