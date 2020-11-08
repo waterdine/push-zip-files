@@ -11,7 +11,7 @@ try {
      core.setFailed("Invalid characters in string");
   }
   
-  exec('"C:\\Program Files\\Git\\bin\\git.exe" add *.zip', {cwd:repo}, (err, stdout, stderr) => {
+  exec('"C:\\Program Files\\Git\\cmd\\git.exe" -C "' + repo + '" add *.zip', (err, stdout, stderr) => {
     console.log(stdout);
     console.log(stderr);
     if (err) {
@@ -20,7 +20,7 @@ try {
     }
   });
   
-  exec('"C:\\Program Files\\Git\\bin\\git.exe"  commit -m "Update binaries"', {cwd:repo}, (err, stdout, stderr) => {
+  exec('"C:\\Program Files\\Git\\cmd\\git.exe" -C "' + repo + '" commit -m "Update binaries"', (err, stdout, stderr) => {
     console.log(stdout);
     console.log(stderr);
     if (err) {
@@ -29,7 +29,7 @@ try {
     }
   });
   
-  exec('"C:\\Program Files\\Git\\bin\\git.exe"  push origin main', {cwd:repo}, (err, stdout, stderr) => {
+  exec('"C:\\Program Files\\Git\\cmd\\git.exe" -C "' + repo + '" push origin main', (err, stdout, stderr) => {
     console.log(stdout);
     console.log(stderr);
     if (err) {
