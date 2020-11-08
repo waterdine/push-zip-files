@@ -5,6 +5,14 @@ inputs:
     description: 'Path to repo'
     required: true
     default: ''
+  username:
+    description: 'Commit username'
+    required: true
+    default: ''
+  email:
+    description: 'Commit email'
+    required: true
+    default: ''
 runs:
   using: 'node12'
   main: 'index.js'
